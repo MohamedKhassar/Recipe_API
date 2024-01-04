@@ -8,7 +8,7 @@ const mongoose=require("mongoose")
 const router = require("./routes/route")
 
 mongoose.connect(DB_URL)
-
+app.use(express.json())
 app.use(router)
 app.listen(PORT,()=>{
     console.log("listened to",PORT)
