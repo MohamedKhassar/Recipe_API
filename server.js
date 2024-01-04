@@ -1,15 +1,29 @@
-const express=require("express")
-const app=express()
-const dotenv=require("dotenv")
-dotenv.config()
-const DB_URL=process.env.DB_URL
-const PORT=process.env.PORT
-const mongoose=require("mongoose")
-const router = require("./routes/route")
+// Require necessary packages
+const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
-mongoose.connect(DB_URL)
-app.use(express.json())
-app.use(router)
-app.listen(PORT,()=>{
-    console.log("listened to",PORT)
-})
+// Load environment variables from .env file
+dotenv.config();
+
+// Define constants
+const DB_URL = process.env.DB_URL;
+const PORT = process.env.PORT;
+
+// Connect to MongoDB
+mongoose.connect(DB_URL);
+
+// Initialize the app and router
+const app = express();
+const router = require("./routes/route");
+
+// Set up the middleware
+app.use(express.json());
+
+// Set up the router
+app.use(router);
+
+// Start the server
+app.listen(PORT, () => {
+    console.log("Server is listening on port", PORT);
+});
