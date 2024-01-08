@@ -12,6 +12,9 @@ const PORT = process.env.PORT;
 
 // Connect to MongoDB
 mongoose.connect(DB_URL);
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB");
+});
 
 // Initialize the app and router
 const app = express();
@@ -25,5 +28,5 @@ app.use(router);
 
 // Start the server
 app.listen(PORT, () => {
-    console.log("Server is listening on port", PORT);
+  console.log("Server is listening on port", PORT);
 });

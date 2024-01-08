@@ -1,5 +1,11 @@
 const express = require("express");
-const { getAll, postData, deleteData, updateData, getOneData } = require("../controllers/RecipesController");
+const {
+  getAll,
+  postData,
+  deleteData,
+  updateData,
+  getOneData,
+} = require("../controllers/RecipesController");
 const router = express.Router();
 
 // Route for retrieving all recipes.
