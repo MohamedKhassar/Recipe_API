@@ -20,6 +20,10 @@ const getAll = async (req, res) => {
 
 // Posts data to the Recipe model
 const postData = async (req, res) => {
+  const image = req.file;
+  if (image) {
+    req.body.image = image.path;
+  }
   try {
     const data = await RecipeSchema.create(req.body);
     res.status(201).json({
@@ -29,7 +33,7 @@ const postData = async (req, res) => {
     });
     console.log("/POST", res.statusCode);
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       status: res.statusCode,
       message: error.message,
     });

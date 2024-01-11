@@ -1,6 +1,6 @@
 ## Recipes API
 
-🧑‍💻 Creating a Recipes API using ***ExpressJS*** and ***MongoDB*** 
+🧑‍💻 Creating Recipes API using ***ExpressJS*** and ***MongoDB*** 
 
 
 ![](https://res.cloudinary.com/dhlxoefrk/image/upload/v1704401124/mi9t6a3vorqwt31ihzjf.jpg)

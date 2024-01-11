@@ -6,13 +6,14 @@ const {
   updateData,
   getOneData,
 } = require("../controllers/RecipesController");
+const upload = require("../middleware/uploadImage");
 const router = express.Router();
 
 // Route for retrieving all recipes.
 router.get("/", getAll);
 
 // Route for creating a new recipe.
-router.post("/", postData);
+router.post("/", upload.single("image"), postData);
 
 // Route for deleting a specific recipe.
 router.delete("/:id", deleteData);
