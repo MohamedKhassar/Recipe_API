@@ -105,6 +105,7 @@ const getOneData = async (req, res) => {
   }
 };
 
+// Retrieves data from the Recipe model by id
 const getDataByDishType = async (req, res) => {
   try {
     const dishType = req.query.dishType;
