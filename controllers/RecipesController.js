@@ -24,7 +24,7 @@ const postData = async (req, res) => {
   if (image) {
     req.body.image = image.path;
   }
- 
+
   try {
     const data = await RecipeSchema.create(req.body);
     res.status(201).json({
@@ -62,6 +62,10 @@ const deleteData = async (req, res) => {
 
 // Updates data in the Recipe model by id
 const updateData = async (req, res) => {
+  const image = req.file;
+  if (image) {
+    req.body.image = image.path;
+  }
   try {
     const { id } = req.params;
     const data = await RecipeSchema.findByIdAndUpdate(req.params.id, req.body, {
@@ -94,7 +98,25 @@ const getOneData = async (req, res) => {
     });
     console.log(`/GET/${id}`, res.statusCode);
   } catch (error) {
-    res.status(500).json({
+    res.status(404).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+};
+
+const getDataByDishType = async (req, res) => {
+  try {
+    const dishType = req.query.dishType;
+    const data = await RecipeSchema.find({ dishType: dishType });
+    res.status(200).json({
+      status: res.statusCode,
+      data,
+      message: "Data retrieved successfully by dishType",
+    });
+    console.log("/GET", res.statusCode);
+  } catch (error) {
+    res.status(404).json({
       status: res.statusCode,
       message: error.message,
     });
@@ -107,4 +129,5 @@ module.exports = {
   deleteData,
   updateData,
   getOneData,
+  getDataByDishType,
 };

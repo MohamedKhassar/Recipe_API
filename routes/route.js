@@ -5,10 +5,14 @@ const {
   deleteData,
   updateData,
   getOneData,
+  getDataByDishType,
 } = require("../controllers/RecipesController");
 const upload = require("../middleware/uploadImage");
 const router = express.Router();
 
+// Route for retrieving recipes by dish type.
+
+router.get("/recipes", getDataByDishType);
 // Route for retrieving all recipes.
 router.get("/", getAll);
 
@@ -19,7 +23,7 @@ router.post("/", upload.single("image"), postData);
 router.delete("/:id", deleteData);
 
 // Route for updating a specific recipe.
-router.put("/:id", updateData);
+router.put("/:id", upload.single("image"), updateData);
 
 // Route for retrieving a specific recipe.
 router.get("/:id", getOneData);
