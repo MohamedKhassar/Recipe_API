@@ -24,6 +24,7 @@ const postData = async (req, res) => {
   if (image) {
     req.body.image = image.path;
   }
+ 
   try {
     const data = await RecipeSchema.create(req.body);
     res.status(201).json({
