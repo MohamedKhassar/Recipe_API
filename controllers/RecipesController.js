@@ -68,11 +68,8 @@ const updateData = async (req, res) => {
   }
   try {
     const { id } = req.params;
-    const data = await RecipeSchema.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      useFindAndModify: false,
-    });
-    res.status(200).json({
+    const data = await RecipeSchema.findByIdAndUpdate(id, req.body);
+    res.status(200).sendFile({
       status: res.statusCode,
       data,
       message: "Data updated successfully",
@@ -108,8 +105,16 @@ const getOneData = async (req, res) => {
 // Retrieves data from the Recipe model by id
 const getDataByDishType = async (req, res) => {
   try {
-    const dishType = req.query.dishType;
+    const { dishType } = req.query;
     const data = await RecipeSchema.find({ dishType: dishType });
+//handel all logic
+    if (!!data) {
+      res.status(404).json({
+        status: res.statusCode,
+        message: "Not Found",
+      });
+      console.log("/GET", res.statusCode);
+    }
     res.status(200).json({
       status: res.statusCode,
       data,
