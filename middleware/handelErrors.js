@@ -11,6 +11,14 @@ const handelErrors = (err) => {
   if (err.code == 11000) {
     errors.email = "email already exists";
   }
+  if (err.message == "incorrect email") {
+    errors.email = err.message;
+  }
+  if (err.message == "incorrect password") {
+    errors.password = err.message;
+  }
+
+  console.log(err.message);
   return errors;
 };
 module.exports = handelErrors;

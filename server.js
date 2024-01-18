@@ -22,11 +22,12 @@ mongoose.connection.on("connected", () => {
 const app = express();
 const router = require("./routes/route");
 const authRoutes = require("./routes/authRoutes");
+const cookieParser = require("cookie-parser");
 
 app.use(cors());
 // Set up the middleware
 app.use(express.json());
-
+app.use(cookieParser());
 // Set up the router
 app.use(router);
 app.use("/auth", authRoutes);
