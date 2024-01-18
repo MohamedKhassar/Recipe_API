@@ -1,5 +1,15 @@
-const signup = (req, res) => {
-  res.send("signup");
+const User = require("../Models/UserModel");
+const handelErrors = require("../middleware/handelErrors");
+
+const signup = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    await User.create({ email, password });
+    res.json("created");
+  } catch (error) {
+    const errors = handelErrors(error);
+    res.json(errors);
+  }
 };
 
 const login = (req, res) => {
