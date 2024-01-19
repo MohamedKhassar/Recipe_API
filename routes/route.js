@@ -8,6 +8,7 @@ const {
   getDataByDishType, // Retrieve recipes by dish type
 } = require("../controllers/RecipesController");
 const upload = require("../middleware/uploadImage");
+const authRequire = require("../middleware/authRequire");
 
 const router = express.Router();
 
@@ -16,14 +17,14 @@ router.get("/", getAll);
 
 // Route for creating a new recipe.
 // The 'upload.single("image")' middleware is used to handle image uploads.
-router.post("/", upload.single("image"), postData);
+router.post("/", authRequire, upload.single("image"), postData);
 
 // Route for deleting a specific recipe.
-router.delete("/:id", deleteData);
+router.delete("/:id", authRequire, deleteData);
 
 // Route for updating a specific recipe.
 // The 'upload.single("image")' middleware is used to handle image uploads.
-router.put("/:id", upload.single("image"), updateData);
+router.put("/:id", authRequire, upload.single("image"), updateData);
 
 // Route for retrieving recipes by dish type.
 router.get("/recipes", getDataByDishType);

@@ -1,0 +1,163 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Recipes API"
+  description: "API for managing recipes"
+basePath: "/api"
+schemes:
+  - "http"
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+paths:
+  /recipes:
+    get:
+      summary: "Retrieve recipes by dish type"
+      tags:
+        - "Recipes"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Recipe"
+    post:
+      summary: "Create a new recipe"
+      tags:
+        - "Recipes"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: "body"
+          name: "recipe"
+          description: "Recipe object that needs to be added"
+          required: true
+          schema:
+            $ref: "#/definitions/RecipeInput"
+        - in: "formData"
+          name: "image"
+          description: "Recipe image file"
+          required: true
+          type: "file"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Recipe"
+
+  /recipes/{id}:
+    get:
+      summary: "Retrieve a specific recipe"
+      tags:
+        - "Recipes"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "ID of the recipe to retrieve"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Recipe"
+    put:
+      summary: "Update a specific recipe"
+      tags:
+        - "Recipes"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "ID of the recipe to update"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "recipe"
+          description: "Updated recipe object"
+          required: true
+          schema:
+            $ref: "#/definitions/RecipeInput"
+        - in: "formData"
+          name: "image"
+          description: "Updated recipe image file"
+          required: true
+          type: "file"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Recipe"
+    delete:
+      summary: "Delete a specific recipe"
+      tags:
+        - "Recipes"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "ID of the recipe to delete"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+
+definitions:
+  Recipe:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      dishType:
+        type: "string"
+      imageUrl:
+        type: "string"
+        format: "url"
+      ingredients:
+        type: "array"
+        items:
+          type: "string"
+      instructions:
+        type: "array"
+        items:
+          type: "string"
+    required:
+      - name
+      - dishType
+      - ingredients
+      - instructions
+
+  RecipeInput:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      dishType:
+        type: "string"
+      ingredients:
+        type: "array"
+        items:
+          type: "string"
+      instructions:
+        type: "array"
+        items:
+          type: "string"
+    required:
+      - name
+      - dishType
+      - ingredients
+      - instructions
