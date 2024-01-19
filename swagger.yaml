@@ -1,163 +1,154 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  version: "1.0.0"
-  title: "Recipes API"
-  description: "API for managing recipes"
-basePath: "/api"
-schemes:
-  - "http"
-  - "https"
-consumes:
-  - "application/json"
-produces:
-  - "application/json"
+  title: Recipes API
+  description: API for managing recipes
+  version: 1.0.0
 
 paths:
-  /recipes:
+  /api/recipes:
     get:
-      summary: "Retrieve recipes by dish type"
+      summary: Get all recipes
       tags:
         - "Recipes"
       responses:
-        200:
-          description: "Successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Recipe"
+        '200':
+          description: A list of recipes
+          content:
+            application/json:
+              example:
+                - _id: "1"
+                  title: "Recipe 1"
+                  description: "Description 1"
+                - _id: "2"
+                  title: "Recipe 2"
+                  description: "Description 2"
+        '400':
+          description: Item not found
     post:
-      summary: "Create a new recipe"
+      summary: Create a new recipe
       tags:
         - "Recipes"
       security:
         - bearerAuth: []
-      parameters:
-        - in: "body"
-          name: "recipe"
-          description: "Recipe object that needs to be added"
-          required: true
-          schema:
-            $ref: "#/definitions/RecipeInput"
-        - in: "formData"
-          name: "image"
-          description: "Recipe image file"
-          required: true
-          type: "file"
+      requestBody:
+        description: Recipe details
+        required: true
+        content:
+          application/json:
+            example:
+              title: "New Recipe"
+              description: "Description of the new recipe"
       responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/Recipe"
+        '200':
+          description: Recipe created successfully
 
-  /recipes/{id}:
+  /api/recipes/{id}:
     get:
-      summary: "Retrieve a specific recipe"
+      summary: Get a specific recipe by ID
       tags:
         - "Recipes"
       parameters:
-        - in: "path"
-          name: "id"
-          description: "ID of the recipe to retrieve"
+        - in: path
+          name: id
           required: true
-          type: "string"
-      responses:
-        200:
-          description: "Successful operation"
           schema:
-            $ref: "#/definitions/Recipe"
+            type: string
+          description: ID of the recipe
+      responses:
+        '200':
+          description: A specific recipe
+          content:
+            application/json:
+              example:
+                _id: "1"
+                title: "Recipe 1"
+                description: "Description 1"
     put:
-      summary: "Update a specific recipe"
+      summary: Update a specific recipe by ID
       tags:
         - "Recipes"
       security:
         - bearerAuth: []
       parameters:
-        - in: "path"
-          name: "id"
-          description: "ID of the recipe to update"
-          required: true
-          type: "string"
-        - in: "body"
-          name: "recipe"
-          description: "Updated recipe object"
+        - in: path
+          name: id
           required: true
           schema:
-            $ref: "#/definitions/RecipeInput"
-        - in: "formData"
-          name: "image"
-          description: "Updated recipe image file"
-          required: true
-          type: "file"
+            type: string
+          description: ID of the recipe
+      requestBody:
+        description: Updated recipe details
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Updated Recipe"
+              description: "Updated description"
       responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/Recipe"
+        '200':
+          description: Recipe updated successfully
     delete:
-      summary: "Delete a specific recipe"
+      summary: Delete a specific recipe by ID
       tags:
         - "Recipes"
       security:
         - bearerAuth: []
       parameters:
-        - in: "path"
-          name: "id"
-          description: "ID of the recipe to delete"
+        - in: path
+          name: id
           required: true
-          type: "string"
+          schema:
+            type: string
+          description: ID of the recipe
+      responses:
+        '200':
+          description: Recipe deleted successfully
+  /api/auth/signup:
+    post:
+      summary: "User signup"
+      tags:
+        - "Authentication"
+      parameters:
+        - in: "body"
+          name: "user"
+          description: "User object for signup"
+          required: true
+          schema:
+            $ref: "#/definitions/UserSignup"
       responses:
         200:
-          description: "Successful operation"
+          description: "Successful signup"
 
-definitions:
-  Recipe:
-    type: "object"
-    properties:
-      id:
-        type: "string"
-        format: "uuid"
-      name:
-        type: "string"
-      description:
-        type: "string"
-      dishType:
-        type: "string"
-      imageUrl:
-        type: "string"
-        format: "url"
-      ingredients:
-        type: "array"
-        items:
-          type: "string"
-      instructions:
-        type: "array"
-        items:
-          type: "string"
-    required:
-      - name
-      - dishType
-      - ingredients
-      - instructions
+  /api/auth/login:
+    post:
+      summary: "User login"
+      tags:
+        - "Authentication"
+      parameters:
+        - in: "body"
+          name: "credentials"
+          description: "User credentials for login"
+          required: true
+          schema:
+            $ref: "#/definitions/UserLogin"
+      responses:
+        200:
+          description: "Successful login"
 
-  RecipeInput:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-      description:
-        type: "string"
-      dishType:
-        type: "string"
-      ingredients:
-        type: "array"
-        items:
-          type: "string"
-      instructions:
-        type: "array"
-        items:
-          type: "string"
-    required:
-      - name
-      - dishType
-      - ingredients
-      - instructions
+  /api/auth/logout:
+    get:
+      summary: "User logout"
+      tags:
+        - "Authentication"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Successful logout"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

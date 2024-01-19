@@ -87,13 +87,13 @@ const updateData = async (req, res) => {
 const getOneData = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await RecipeSchema.findById(id, { __v: 0 });
+    const data = await RecipeSchema.findById(id);
     res.status(200).json({
       status: res.statusCode,
       data,
       message: "Data retrieved successfully",
     });
-    console.log(`/GET/${id}`, res.statusCode);
+    console.log(`/GET/${id}`);
   } catch (error) {
     res.status(404).json({
       status: res.statusCode,
@@ -107,7 +107,7 @@ const getDataByDishType = async (req, res) => {
   try {
     const { dishType } = req.query;
     const data = await RecipeSchema.find({ dishType: dishType });
-//handel all logic
+    //handel all logic
     if (!!data) {
       res.status(404).json({
         status: res.statusCode,

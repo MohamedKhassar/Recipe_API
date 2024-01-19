@@ -19,7 +19,6 @@ const authRequire = async (req, res, next) => {
       message: "Unauthorized",
     });
   }
-  next();
 };
 
 module.exports = authRequire;
